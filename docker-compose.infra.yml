@@ -1,0 +1,23 @@
+# Só a infraestrutura — para rodar os serviços pelo Visual Studio/Rider/dotnet run e o front com npm run dev.
+#   docker compose -f docker-compose.infra.yml up -d
+name: buynest-infra
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    ports: ["5672:5672", "15672:15672"]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+volumes:
+  pgdata:

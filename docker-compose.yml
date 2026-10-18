@@ -1,0 +1,119 @@
+name: buynest
+
+x-dotnet-env: &dotnet-env
+  ASPNETCORE_ENVIRONMENT: Docker
+  ASPNETCORE_URLS: http://+:8080
+  Jwt__Key: ${JWT_KEY:-dev-only-change-me-buynest-super-secret-key-32+}
+  Jwt__Issuer: buynest-identity
+  Jwt__Audience: buynest
+  RabbitMq__Host: rabbitmq
+  RabbitMq__Username: guest
+  RabbitMq__Password: guest
+
+x-dotnet-depends: &dotnet-depends
+  postgres:
+    condition: service_healthy
+  rabbitmq:
+    condition: service_healthy
+
+services:
+  # ---------- Infraestrutura ----------
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    ports: ["5672:5672", "15672:15672"]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  # ---------- Microserviços (.NET) ----------
+  identity-api:
+    build: { context: ./backend, args: { PROJECT: src/Services/Identity/Buynest.Identity.Api/Buynest.Identity.Api.csproj, ASSEMBLY: Buynest.Identity.Api } }
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Database: Host=postgres;Database=buynest_identity;Username=postgres;Password=postgres
+    depends_on: *dotnet-depends
+
+  catalog-api:
+    build: { context: ./backend, args: { PROJECT: src/Services/Catalog/Buynest.Catalog.Api/Buynest.Catalog.Api.csproj, ASSEMBLY: Buynest.Catalog.Api } }
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Database: Host=postgres;Database=buynest_catalog;Username=postgres;Password=postgres
+      ConnectionStrings__Redis: redis:6379
+    depends_on:
+      <<: *dotnet-depends
+      redis:
+        condition: service_started
+
+  inventory-api:
+    build: { context: ./backend, args: { PROJECT: src/Services/Inventory/Buynest.Inventory.Api/Buynest.Inventory.Api.csproj, ASSEMBLY: Buynest.Inventory.Api } }
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Database: Host=postgres;Database=buynest_inventory;Username=postgres;Password=postgres
+    depends_on: *dotnet-depends
+
+  ordering-api:
+    build: { context: ./backend, args: { PROJECT: src/Services/Ordering/Buynest.Ordering.Api/Buynest.Ordering.Api.csproj, ASSEMBLY: Buynest.Ordering.Api } }
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Database: Host=postgres;Database=buynest_ordering;Username=postgres;Password=postgres
+      Services__Catalog: http://catalog-api:8080/
+    depends_on: *dotnet-depends
+
+  payment-api:
+    build: { context: ./backend, args: { PROJECT: src/Services/Payment/Buynest.Payment.Api/Buynest.Payment.Api.csproj, ASSEMBLY: Buynest.Payment.Api } }
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Database: Host=postgres;Database=buynest_payment;Username=postgres;Password=postgres
+      PaymentGateway__BaseUrl: http://localhost:8080/
+      # "Fake" (padrão) ou "Stripe" - defina no arquivo .env (veja .env.example)
+      PaymentGateway__Provider: ${PAYMENT_PROVIDER:-Fake}
+      Stripe__SecretKey: ${STRIPE_SECRET_KEY:-}
+      Stripe__WebhookSecret: ${STRIPE_WEBHOOK_SECRET:-}
+    depends_on: *dotnet-depends
+
+  gateway:
+    build: { context: ./backend, args: { PROJECT: src/Gateway/Buynest.Gateway/Buynest.Gateway.csproj, ASSEMBLY: Buynest.Gateway } }
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      Cors__AllowedOrigins__0: http://localhost:3000
+      Cors__AllowedOrigins__1: http://localhost:5173
+    ports: ["5000:8080"]
+    depends_on: [identity-api, catalog-api, inventory-api, ordering-api, payment-api]
+
+  # Encaminha os webhooks do Stripe (modo teste) para o gateway local.
+  # Só sobe com: docker compose --profile stripe up -d
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    # a imagem já executa "/bin/stripe": o comando começa no subcomando ("listen")
+    command: listen --forward-to gateway:8080/api/v1/webhooks/stripe
+    environment:
+      STRIPE_API_KEY: ${STRIPE_SECRET_KEY:-}
+    depends_on: [gateway]
+    profiles: [stripe]
+
+  # ---------- Frontend ----------
+  frontend:
+    build: ./frontend
+    ports: ["3000:80"]
+    depends_on: [gateway]
+
+volumes:
+  pgdata:

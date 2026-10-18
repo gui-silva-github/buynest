@@ -1,0 +1,15 @@
+# .NET
+**/bin/
+**/obj/
+.vs/
+*.user
+TestResults/
+# Node
+node_modules/
+dist/
+storybook-static/
+playwright-report/
+test-results/
+# Env
+.env
+.env.local
