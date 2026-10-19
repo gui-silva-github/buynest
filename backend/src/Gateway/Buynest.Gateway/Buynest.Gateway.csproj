@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Ocelot" />
+        <PackageReference Include="Ocelot.Provider.Polly" />
+    </ItemGroup>
+</Project>
