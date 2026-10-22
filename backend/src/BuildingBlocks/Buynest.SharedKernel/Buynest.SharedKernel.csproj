@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Núcleo compartilhado SEM dependências de framework: pode ser usado pela camada de Domínio -->
+</Project>

@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Contratos de integração (eventos/comandos) trocados via RabbitMQ.
+        Mudar um contrato = mudar a "API púbica assíncrona" entre serviços.
+     -->
+</Project>
