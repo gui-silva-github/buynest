@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- "Kit padrão" dos serviços (como o Bootis.Shared): middleware, auth, swagger, mensageria, persistência -->
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="Swashbuckle.AspNetCore" />
+        <PackageReference Include="MediatR" />
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="MassTransit" />
+        <PackageReference Include="MassTransit.RabbitMQ" />
+        <PackageReference Include="MassTransit.EntityFrameworkCore" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Buynest.SharedKernel\Buynest.SharedKernel.csproj" />
+        <ProjectReference Include="..\Buynest.Contracts\Buynest.Contracts.csproj" />
+    <ItemGroup>
+</Project>
