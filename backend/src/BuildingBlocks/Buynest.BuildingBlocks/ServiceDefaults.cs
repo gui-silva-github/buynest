@@ -55,7 +55,7 @@ namespace Buynest.BuildingBlocks {
             return builder;
         }
 
-        public static WebApplication UseServiceDefaults(this WebAppication app) {
+        public static WebApplication UseServiceDefaults(this WebApplication app) {
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             if (!app.Environment.IsProduction()) {

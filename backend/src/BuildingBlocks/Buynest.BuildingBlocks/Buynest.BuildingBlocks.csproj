@@ -18,5 +18,5 @@
     <ItemGroup>
         <ProjectReference Include="..\Buynest.SharedKernel\Buynest.SharedKernel.csproj" />
         <ProjectReference Include="..\Buynest.Contracts\Buynest.Contracts.csproj" />
-    <ItemGroup>
+    </ItemGroup>
 </Project>
