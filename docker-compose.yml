@@ -103,7 +103,7 @@ services:
   stripe-cli:
     image: stripe/stripe-cli:latest
     # a imagem já executa "/bin/stripe": o comando começa no subcomando ("listen")
-    command: listen --forward-to gateway:8080/api/v1/webhooks/stripe
+    command: listen --forward-to gateway:8080/api/payments/webhooks/stripe
     environment:
       STRIPE_API_KEY: ${STRIPE_SECRET_KEY:-}
     depends_on: [gateway]

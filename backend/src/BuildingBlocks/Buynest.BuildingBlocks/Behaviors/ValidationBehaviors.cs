@@ -3,9 +3,10 @@ using MediatR;
 
 namespace Buynest.BuildingBlocks.Behaviors {
     /// <summary>
-    /// Pipeline do MediatR (padrão Chain of Responsability): valida o request com FluentValidation
-    /// ANTES de chegar no handler. Se falhar, o middleware devolve 400 com os erros por campo
-    public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidation<TRequest>> validators) :
+    /// Pipeline do MediatR (padrão Chain of Responsibility): valida o request com FluentValidation
+    /// ANTES de chegar no handler. Se falhar, o middleware devolve 400 com os erros por campo.
+    /// </summary>
+    public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) :
         IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken) {
@@ -13,7 +14,7 @@ namespace Buynest.BuildingBlocks.Behaviors {
                 return await next();
 
             var context = new ValidationContext<TRequest>(request);
-            var results = await Task.WhenAll(validators.Select(v => v.ValidateAsnync(context, cancellationToken)));
+            var results = await Task.WhenAll(validators.Select(v => v.ValidateAsync(context, cancellationToken)));
             var failures = results.SelectMany(r => r.Errors).Where(f => f is not null).ToList();
 
             if (failures.Count != 0)

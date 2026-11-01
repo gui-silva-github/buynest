@@ -11,6 +11,7 @@ namespace Buynest.BuildingBlocks {
     /// <summary>
     /// Extension methods de DI ("DependencyInjection.cs") compartilhados por todos os serviços.
     /// Cada Program.cs fica curto: builder.AddServiceDefaults("Catalog") + app.UseServiceDefaults().
+    /// </summary>
     public static class ServiceDefaults {
         public static WebApplicationBuilder AddServiceDefaults(this WebApplicationBuilder builder, string serviceName) {
             var services = builder.Services;

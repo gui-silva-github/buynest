@@ -24,7 +24,7 @@ namespace Buynest.BuildingBlocks.Persistence {
             var db = scope.ServiceProvider.GetRequiredService<TDbContext>();
             var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Database");
 
-            for (var attempt = 1; ; attempt) {
+            for (var attempt = 1; ; attempt++) {
                 try {
                     await db.Database.EnsureCreatedAsync();
                     logger.LogInformation("Banco de {Context} pronto.", typeof(TDbContext).Name);

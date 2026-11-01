@@ -8,7 +8,7 @@ namespace Buynest.BuildingBlocks.Api {
     /// <summary>
     /// Middleware global: transforma exceções em respostas HTTP padronizadas (ApiErrorResponse).
     /// Evita try/catch espalhado nos controllers.
-    /// <summary>
+    /// </summary>
     public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger) {
         public async Task InvokeAsync(HttpContext context) {
             try {

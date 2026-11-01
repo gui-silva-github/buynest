@@ -173,7 +173,7 @@ Garantias:
    ```
 3. Crie um pedido no **cartão** escolhendo um cartão de teste (aprovado, recusado, saldo insuficiente ou expirado).
 
-O `stripe-cli` encaminha os eventos para `gateway:8080/api/v1/webhooks/stripe`.
+O `stripe-cli` encaminha os eventos para `gateway:8080/api/payments/webhooks/stripe`.
 
 ---
 

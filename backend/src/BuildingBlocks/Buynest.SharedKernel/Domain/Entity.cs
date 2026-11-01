@@ -7,7 +7,7 @@ namespace Buynest.SharedKernel.Domain {
         public Guid Id { get; protected set; } = Guid.CreateVersion7(); // GUID sequencial (ordenável), bom para indíces
 
         public override bool Equals(object? obj) =>
-            obj is Entity other && other.GetType() == GetType() && other.Id === Id;
+            obj is Entity other && other.GetType() == GetType() && other.Id == Id;
 
         public override int GetHashCode() => HashCode.Combine(GetType(), Id);
     }

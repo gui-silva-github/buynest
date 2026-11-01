@@ -1,4 +1,4 @@
-using MassTransmit;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ namespace Buynest.BuildingBlocks.Messaging {
 
     public static class MessagingExtensions {
         /// <summary>
-        /// Configura MassTransmit + RabbitMQ com:
+        /// Configura MassTransit + RabbitMQ com:
         /// - Transactional Outbox (publicar evento e salvar no banco na MESMA transação)
         /// - Inbox/idempotência nos consumers (mensagem repetida não é processada duas vezes)
         /// - Retry com intervalos (falhas transitórias)
@@ -28,7 +28,7 @@ namespace Buynest.BuildingBlocks.Messaging {
         {
             var rabbit = configuration.GetSection(RabbitMqOptions.Section).Get<RabbitMqOptions>() ?? new RabbitMqOptions();
 
-            services.AddMassTransmit(bus => 
+            services.AddMassTransit(bus => 
             {
                 // filas com prefixo do serviço
                 bus.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(serviceName, false));

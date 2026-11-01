@@ -57,7 +57,7 @@ namespace Buynest.Identity.Api.Features
             var auth = app.MapGroup("/api/auth").WithTags("Auth");
 
             auth.MapPost("/login", async (
-                LoginRequest loginRequest,
+                LoginRequest request,
                 IValidator<LoginRequest> validator,
                 IdentityDbContext db,
                 IPasswordHasher<User> hasher,
@@ -84,11 +84,11 @@ namespace Buynest.Identity.Api.Features
                 IdentityDbContext db,
                 IPasswordHasher<User> hasher,
                 ITokenService tokens,
-                CancellatioToken ct
+                CancellationToken ct
             ) =>
             {
                 await validator.ValidateAndThrowAsync(request, ct);
-                await EnsureEmailsIsFreeAsync(db, request.Email, ct);
+                await EnsureEmailIsFreeAsync(db, request.Email, ct);
 
                 var tenant = Tenant.Create(request.CompanyName);
                 var admin = User.Create(tenant.Id, request.Name, request.Email, Roles.Admin);
@@ -133,7 +133,7 @@ namespace Buynest.Identity.Api.Features
             ) =>
             {
                 await validator.ValidateAndThrowAsync(request, ct);
-                await EnsureEmailsFreeAsync(db, request.Email, ct);
+                await EnsureEmailIsFreeAsync(db, request.Email, ct);
 
                 var user = User.Create(current.TenantId, request.Name, request.Email, request.Role);
                 user.SetPasswordHash(hasher.HashPassword(user, request.Password));
