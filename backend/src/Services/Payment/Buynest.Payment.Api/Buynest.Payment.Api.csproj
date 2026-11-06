@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <!-- VERTICAL SLICE: cada pasta em Features/ é uma funcionalidade completa
+        (endpoint/consumer + validação + regra + acesso a dados juntos.)
+    -->
+    <PropertyGroup>
+        <UserSecretsId>buynest-payment-api</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Stripe.net" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Buynest.BuildingBlocks\Buynest.BuildingBlocks.csproj" />
+    </ItemGroup>
+</Project>
