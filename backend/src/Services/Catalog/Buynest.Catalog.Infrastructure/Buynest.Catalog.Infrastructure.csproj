@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Infrastructure: adapters concretos (EF Core/Postgres, Redis, MassTransit) para as abstrações da Application -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Buynest.BuildingBlocks\Buynest.BuildingBlocks.csproj" />
+        <ProjectReference Include="..\Buynest.Catalog.Application\Buynest.Catalog.Application.csproj" />
+    </ItemGroup>
+</Project>
