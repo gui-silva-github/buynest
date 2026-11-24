@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- APLICAÇÂO: casos de uso (CQRS com MediatR). Orquestra o domínio através de portas (interfaces). -->
+  <ItemGroup>
+    <ProjectReference Include="..\Buynest.Catalog.Domain\Buynest.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Buynest.BuildingBlocks\Buynest.BuildingBlocks.csproj" />
+  </ItemGroup>
+</Project>

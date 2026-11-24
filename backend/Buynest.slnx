@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/Buynest.BuildingBlocks/Buynest.BuildingBlocks.csproj" />
+    <Project Path="src/BuildingBlocks/Buynest.Contracts/Buynest.Contracts.csproj" />
+    <Project Path="src/BuildingBlocks/Buynest.SharedKernel/Buynest.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/Gateway/">
+    <Project Path="src/Gateway/Buynest.Gateway/Buynest.Gateway.csproj" />
+  </Folder>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Catalog/">
+    <Project Path="src/Services/Catalog/Buynest.Catalog.Api/Buynest.Catalog.Api.csproj" />
+    <Project Path="src/Services/Catalog/Buynest.Catalog.Application/Buynest.Catalog.Application.csproj" />
+    <Project Path="src/Services/Catalog/Buynest.Catalog.Domain/Buynest.Catalog.Domain.csproj" />
+    <Project Path="src/Services/Catalog/Buynest.Catalog.Infrastructure/Buynest.Catalog.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Services/Identity/">
+    <Project Path="src/Services/Identity/Buynest.Identity.Api/Buynest.Identity.Api.csproj" />
+  </Folder>
+  <Folder Name="/Services/Inventory/">
+    <Project Path="src/Services/Inventory/Buynest.Inventory.Api/Buynest.Inventory.Api.csproj" />
+  </Folder>
+  <Folder Name="/Services/Ordering/">
+    <Project Path="src/Services/Ordering/Buynest.Ordering.Api/Buynest.Ordering.Api.csproj" />
+  </Folder>
+  <Folder Name="/Services/Payment/">
+    <Project Path="src/Services/Payment/Buynest.Payment.Api/Buynest.Payment.Api.csproj" />
+  </Folder>
+</Solution>

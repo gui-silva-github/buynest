@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- DOMÍNIO: regras de negócio puras. Não conhece EF, HTTP, RabbitMQ... (Só o SharedKernel) -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Buynest.SharedKernel\Buynest.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>
